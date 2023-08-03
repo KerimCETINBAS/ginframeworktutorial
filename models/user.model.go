@@ -1,14 +1,10 @@
 package models
 
-type UserContact struct {
-	Phone string `json:"telefon"`
-}
-
 type User struct {
-	UserContact
-	Id       uint   `json:"id"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	ID       uint
+	Phone    string
+	Email    string
+	Password string
 }
 
 type UserLoginDto struct {
@@ -16,6 +12,13 @@ type UserLoginDto struct {
 	Password string
 }
 
-type UserLoginResponse struct {
-	Email string
+type UserResponse struct {
+	ID    uint   `json:"id"`
+	Email string `json:"email"`
+}
+
+func (u *UserResponse) FromUser(data User) {
+	u.ID = data.ID
+	u.Email = data.Email
+
 }

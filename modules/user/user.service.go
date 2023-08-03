@@ -10,6 +10,7 @@ type userService struct {
 
 type IUserService interface {
 	GetUsers() []models.User
+	GetUserById(id uint) models.User
 	CreateUser(data models.User)
 }
 
@@ -24,8 +25,11 @@ func (s *userService) GetUsers() []models.User {
 }
 
 func (s *userService) CreateUser(data models.User) {
-	data.Id = uint(len(s.users))
-
+	data.ID = uint(len(s.users))
 	data.Phone = "1234523425"
 	s.users = append(s.users, data)
+}
+
+func (s *userService) GetUserById(id uint) models.User {
+	return s.users[id]
 }

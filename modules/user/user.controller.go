@@ -1,7 +1,9 @@
 package user
 
 import (
+	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/kerimcetinbas/gogintut/models"
@@ -15,6 +17,7 @@ type userController struct {
 // user controller interface
 type IUserController interface {
 	GetUsers(ctx *gin.Context)
+	GetUserById(ctx *gin.Context)
 	CreateUser(ctx *gin.Context)
 }
 
@@ -39,4 +42,19 @@ func (c *userController) CreateUser(ctx *gin.Context) {
 	}
 
 	c.userService.CreateUser(user)
+}
+
+func (c *userController) GetUserById(ctx *gin.Context) {
+
+	var response models.UserResponse
+	param, _ := strconv.ParseUint(ctx.Param("id"), 10, 32)
+	id := uint(param)
+	data := c.userService.GetUserById(id)
+
+	fmt.Println("before serialize :", response.Email)
+	response.FromUser(data)
+	fmt.Println("after serialize :", response.Email)
+
+	ctx.JSON(http.StatusOK, response)
+
 }
